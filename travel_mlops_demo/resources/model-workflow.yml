@@ -14,7 +14,7 @@ common_permissions: &permissions
 resources:
   jobs:
     model_training_job:
-      name: ${bundle.target}-travel_mlops_demo-model-training-job
+      name: travel_mlops_demo-model-training-job
       job_clusters:
         - job_cluster_key: model_training_job_cluster
           <<: *new_cluster
@@ -26,11 +26,11 @@ resources:
             base_parameters:
               env: ${bundle.target}
               # TODO: Update training_data_path
-              training_data_path: /databricks-datasets/nyctaxi-with-zipcodes/subsampled
+              training_table: asong_demo.travel_raw.nyctaxi_rides
               experiment_name: ${var.experiment_name}
-              model_name: ${bundle.target}.asong_dev.${var.model_name}
-              pickup_features_table: ${bundle.target}.asong_dev.trip_pickup_features
-              dropoff_features_table: ${bundle.target}.asong_dev.trip_dropoff_features
+              model_name:  ${var.catalog_name}.${var.schema_name}.${var.model_name}
+              pickup_features_table:  ${var.catalog_name}.${var.schema_name}.trip_pickup_features
+              dropoff_features_table:  ${var.catalog_name}.${var.schema_name}.trip_dropoff_features
               # git source information of current ML resource deployment. It will be persisted as part of the workflow run
               git_source_info: url:${bundle.git.origin_url}; branch:${bundle.git.branch}; commit:${bundle.git.commit}
         - task_key: ModelValidation

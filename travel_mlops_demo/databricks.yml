@@ -9,6 +9,12 @@ variables:
   model_name:
     description: Model name for the model training.
     default: travel_mlops_demo-model
+  catalog_name:
+    description: Schema where assets will be stored
+    default: asong_${bundle.target}
+  schema_name:
+    description: Schema where assets will be stored
+    default: travel_mlops_demo
 
 include:
   # Resources folder contains ML artifact resources for the ML project that defines model and experiment
@@ -19,12 +25,11 @@ include:
 # Deployment Target specific values for workspace
 targets:
   dev:  # UC Catalog Name 
+    # mode: development
     default: true
     workspace:
       # TODO: add dev workspace URL
-      host:
-
-
+      host: https://e2-demo-field-eng.cloud.databricks.com
 
   staging:
     workspace:

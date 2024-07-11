@@ -28,7 +28,7 @@
 #
 # A Hive-registered Delta table containing the input data.
 dbutils.widgets.text(
-    "input_table_path",
+    "input_table_name",
     "/databricks-datasets/nyctaxi-with-zipcodes/subsampled",
     label="Input Table Name",
 )
@@ -45,7 +45,7 @@ dbutils.widgets.text(
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "output_table_name",
-    "dev.asong_dev.trip_pickup_features",
+    "asong_dev.travel_mlops_demo.trip_pickup_features",
     label="Output Feature Table Name",
 )
 
@@ -71,7 +71,7 @@ notebook_path =  '/Workspace/' + os.path.dirname(dbutils.notebook.entry_point.ge
 # COMMAND ----------
 # DBTITLE 1,Define input and output variables
 
-input_table_path = dbutils.widgets.get("input_table_path")
+input_table_name = dbutils.widgets.get("input_table_name")
 output_table_name = dbutils.widgets.get("output_table_name")
 input_start_date = dbutils.widgets.get("input_start_date")
 input_end_date = dbutils.widgets.get("input_end_date")
@@ -79,7 +79,7 @@ ts_column = dbutils.widgets.get("timestamp_column")
 features_module = dbutils.widgets.get("features_transform_module")
 pk_columns = dbutils.widgets.get("primary_keys")
 
-assert input_table_path != "", "input_table_path notebook parameter must be specified"
+assert input_table_name != "", "input_table_name notebook parameter must be specified"
 assert output_table_name != "", "output_table_name notebook parameter must be specified"
 
 # Extract database name. Needs to be updated for Unity Catalog.
@@ -93,7 +93,7 @@ spark.sql("CREATE DATABASE IF NOT EXISTS " + output_database)
 # COMMAND ----------
 # DBTITLE 1, Read input data.
 
-raw_data = spark.read.format("delta").load(input_table_path)
+raw_data = spark.table(input_table_name)
 
 
 # COMMAND ----------

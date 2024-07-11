@@ -45,7 +45,7 @@ env = dbutils.widgets.get("env")
 
 # Path to the Hive-registered Delta table containing the training data.
 dbutils.widgets.text(
-    "training_data_path",
+    "training_table",
     "/databricks-datasets/nyctaxi-with-zipcodes/subsampled",
     label="Path to the training data",
 )
@@ -58,27 +58,27 @@ dbutils.widgets.text(
 )
 # Unity Catalog registered model name to use for the trained mode.
 dbutils.widgets.text(
-    "model_name", "dev.asong_dev.travel_mlops_demo-model", label="Full (Three-Level) Model Name"
+    "model_name", "asong_dev.travel_mlops_demo.travel_mlops_demo-model", label="Full (Three-Level) Model Name"
 )
 
 # Pickup features table name
 dbutils.widgets.text(
     "pickup_features_table",
-    "dev.asong_dev.trip_pickup_features",
+    "asong_dev.travel_mlops_demo.trip_pickup_features",
     label="Pickup Features Table",
 )
 
 # Dropoff features table name
 dbutils.widgets.text(
     "dropoff_features_table",
-    "dev.asong_dev.trip_dropoff_features",
+    "asong_dev.travel_mlops_demo.trip_dropoff_features",
     label="Dropoff Features Table",
 )
 
 # COMMAND ----------
 # DBTITLE 1,Define input and output variables
 
-input_table_path = dbutils.widgets.get("training_data_path")
+input_table_path = dbutils.widgets.get("training_table")
 experiment_name = dbutils.widgets.get("experiment_name")
 model_name = dbutils.widgets.get("model_name")
 
@@ -93,7 +93,7 @@ mlflow.set_registry_uri('databricks-uc')
 # COMMAND ----------
 # DBTITLE 1, Load raw data
 
-raw_data = spark.read.format("delta").load(input_table_path)
+raw_data = spark.table(input_table_path)
 raw_data.display()
 
 # COMMAND ----------

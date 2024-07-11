@@ -11,21 +11,18 @@ def predict_batch(
     """
     mlflow.set_registry_uri("databricks-uc")
     table = spark_session.table(input_table_name)
-    
+
     from databricks.feature_store import FeatureStoreClient
-    
+
     fs_client = FeatureStoreClient()
 
-    prediction_df = fs_client.score_batch(
-        model_uri,
-        table
-    )
+    prediction_df = fs_client.score_batch(model_uri, table)
     output_df = (
         prediction_df.withColumn("prediction", prediction_df["prediction"])
         .withColumn("model_version", lit(model_version))
         .withColumn("inference_timestamp", to_timestamp(lit(ts)))
     )
-    
+
     output_df.display()
     # Model predictions are written to the Delta table provided as input.
     # Delta is the default format in Databricks Runtime 8.0 and above.

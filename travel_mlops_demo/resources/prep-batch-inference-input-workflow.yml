@@ -13,18 +13,17 @@ common_permissions: &permissions
 
 resources:
   jobs:
-    batch_inference_job:
-      name: ${bundle.target}-travel_mlops_demo-batch-inference-job
+    prep_batch_inference_input_job:
+      name: travel_mlops_demo-prep-batch-inference-input-job
       tasks:
-        - task_key: batch_inference_job
+        - task_key: prep_batch_inference_input_job
           <<: *new_cluster
           notebook_task:
-            notebook_path: ../deployment/batch_inference/notebooks/BatchInference.py
+            notebook_path: ../deployment/batch_inference/notebooks/PrepBatchInferenceInput.py
             base_parameters:
               env: ${bundle.target}
-              input_table_name: ${bundle.target}.asong_dev.feature_store_inference_input  # TODO: create input table for inference
-              output_table_name: ${bundle.target}.asong_dev.predictions
-              model_name: ${bundle.target}.asong_dev.${var.model_name}
+              input_table_name: asong_demo.travel_raw.nyctaxi_rides
+              output_table_name: ${var.catalog_name}.${var.schema_name}.feature_store_inference_input
               # git source information of current ML resource deployment. It will be persisted as part of the workflow run
               git_source_info: url:${bundle.git.origin_url}; branch:${bundle.git.branch}; commit:${bundle.git.commit}
 
