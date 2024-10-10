@@ -15,7 +15,7 @@ grants: &grants
 resources:
   registered_models:
       model:
-        name: ${var.model_name}
+        name: test_mlops_repo-model
         catalog_name: ${var.catalog_name}
         schema_name: ${var.schema_name}
         comment: Registered model in Unity Catalog for the "travel_mlops_demo" ML Project for ${bundle.target} deployment target.

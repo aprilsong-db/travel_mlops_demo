@@ -16,6 +16,7 @@ variables:
     description: Schema where assets will be stored
     default: travel_mlops_demo
 
+
 include:
   # Resources folder contains ML artifact resources for the ML project that defines model and experiment
   # And workflows resources for the ML project including model training -> validation -> deployment,
@@ -25,7 +26,7 @@ include:
 # Deployment Target specific values for workspace
 targets:
   dev:  # UC Catalog Name 
-    # mode: development
+    mode: development
     default: true
     workspace:
       # TODO: add dev workspace URL
